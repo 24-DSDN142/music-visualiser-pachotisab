@@ -1,8 +1,13 @@
-const canvasWidth = 540;
-const canvasHeight = 960;
+const canvasWidth = 1120;
+const canvasHeight = 630;
+
 
 
 let mainCanvas;
+
+let bg; ///images for background and foreground
+let fg;
+
 
 let textInput;
 let slider1, slider2, slider3, slider4;
@@ -43,6 +48,8 @@ function songLoadedSoFar(soFar) {
 function preload() {
   table = loadTable('volumes.csv', 'csv');
   words = loadStrings('words.txt');
+  bg = loadImage('background.jpg'); //loading in my images
+  fg = loadImage('foreground.png')
 }
 
 let volumes = [];

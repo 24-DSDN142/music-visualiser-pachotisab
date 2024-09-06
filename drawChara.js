@@ -101,6 +101,7 @@ function drawChara(m,f,c,x,y,a1,a2,a3,a4,a5,a6,a7,a8,aHe,aT,aHi,sideL,sideA){
         if(face==-1){
             underclothes();
             }
+        
     }else if (mode==1||mode==2){
         if(face==1){
             leg(1);
@@ -150,7 +151,7 @@ function head(){ //calls all the functions to create the head in the order neede
             horn(-1);
             hair();
         }
-    }else if (mode==1){
+    }else if (mode==1||mode==2){
         horn(1*face);
         neck();
         if(chara==1){
@@ -179,7 +180,7 @@ function torso(){ //draws torso, including clothes and neck
             clothes();
             neck();  
         }
-    }else if(mode==1){
+    }else if(mode==1||mode==2){
         hips();
         underclothes();
         chest();
@@ -914,7 +915,7 @@ function overclothes(a){
             
         }
       
-        if(a<0&&mode==0){
+        if(a>0&&mode==0){
             stroke(colorArray[7]);
             fill(colorArray[6]);
             rect(-headW/5,headY+1.8*headH,headW/2.5,headH);

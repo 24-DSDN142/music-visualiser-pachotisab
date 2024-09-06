@@ -19,8 +19,8 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
    let charaY = 150;
   
    
-    drawChara(2,1,0,charaX,charaY, 0,0,0,0, 40,0,330,0, 0,0,0,0,0)
-    drawChara(1,1,1,charaX+500,charaY, 0,0,0,0, 80,0,280,0, 0,0,0,0,0)
+    drawChara(1,1,1,charaX,charaY, 0,0,0,0, 40,0,330,0, 0,0,0,0,0)
+    drawChara(1,-1,1,charaX+500,charaY, 0,0,0,0, 80,0,280,0, 0,0,0,0,0)
    strokeWeight(1);
    // drum bar is green
    fill(0, 200, 0);

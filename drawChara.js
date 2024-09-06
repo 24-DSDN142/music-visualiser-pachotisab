@@ -79,7 +79,7 @@ function drawChara(m,f,c,x,y,a1,a2,a3,a4,a5,a6,a7,a8,aHe,aT,aHi,sideL,sideA){
         }else{
             leg(1);
         }
-
+        
         arm(sideA); //draws upperarms
         if(sideA==1){
             arm(0);
@@ -101,14 +101,20 @@ function drawChara(m,f,c,x,y,a1,a2,a3,a4,a5,a6,a7,a8,aHe,aT,aHi,sideL,sideA){
         if(face==-1){
             underclothes();
             }
+
         
     }else if (mode==1||mode==2){
+        if(mode==2){
+            underclothes();
+        }
         if(face==1){
             leg(1);
             arm(1);
             arm(3)
             leg(0);
-            underclothes();
+            if(mode==1){
+                underclothes();
+            }
             torso();
             overclothes(-1*face);
             arm(0);
@@ -118,7 +124,9 @@ function drawChara(m,f,c,x,y,a1,a2,a3,a4,a5,a6,a7,a8,aHe,aT,aHi,sideL,sideA){
             arm(0);
             arm(2);
             leg(1);
-            underclothes();
+            if(mode==1){
+                underclothes();
+            }
             torso();
             overclothes(-1*face);
             arm(1);
@@ -151,7 +159,7 @@ function head(){ //calls all the functions to create the head in the order neede
             horn(-1);
             hair();
         }
-    }else if (mode==1||mode==2){
+    }else if (mode==1){
         horn(1*face);
         neck();
         if(chara==1){
@@ -161,6 +169,17 @@ function head(){ //calls all the functions to create the head in the order neede
         eyes();
         hair();
         horn(-1*face);
+    }else if(mode==2){
+        horn(1*face);
+        hair();
+        neck();
+        if(chara==1){
+            overclothes(-1*face);
+        }
+        skull();
+        eyes();
+        horn(-1*face);
+
     }
    // pop();
 }
@@ -180,12 +199,17 @@ function torso(){ //draws torso, including clothes and neck
             clothes();
             neck();  
         }
-    }else if(mode==1||mode==2){
+    }else if(mode==1){
         hips();
         underclothes();
         chest();
         neck();
 
+    }else if(mode==2){
+        hips();
+       
+        chest();
+        neck();
     }
    pop();
 }
@@ -214,8 +238,18 @@ if(mode==0){
     vertex(headX+(a*face),d);
     vertex(headX+(a*face), headY);
     endShape();
+}else if(mode==2){
+    beginShape();
+    vertex(headX-a, headY);
+    vertex(headX-b, c);
+    vertex(headX+face*b/2,d);
+    vertex(headX+b, c);
+    vertex(headX+a, headY);
+    endShape();
 }
 }
+
+
 
 function hair(){
     let hairX = headX;
@@ -234,11 +268,15 @@ function hair(){
             a, a+b, a+3*b, a/2, 0.75*hairW,
             hairW, 0.90*hairW, hairW+3*b
         ]
-        if(mode==0){
+        if(mode==0||mode==2){
             ellipse(hairX,hairY,hairW,hairH);   
             push();
             translate(hairX,0);
-
+            if(mode==2){
+                translate(0,hairY);
+                rotate(face*10);
+                translate(0,-hairY);
+            }
             beginShape();                        //vertexes labelled as in hair diagram
             vertex(-hair0X[0]*face,hairY);              //top left (1)
 
@@ -504,9 +542,28 @@ function horn(side){ // called twice by head for each side
             vertex(side*horn0X[0],headY-headH/8);        //11  
             endShape();
             pop();
-        }else if(mode==1){
+        }else if(mode==1||mode==2){
             push();
             translate(headX,0);
+            if(mode==2){
+              if(chara==0){
+                stroke(colorArray[7]);
+                fill(colorArray[6]);
+              }else{
+
+              }
+                beginShape();
+                vertex(-headW/1.6*face,headY+headH/7);
+                vertex(-headW/1.6*face,headY);
+                vertex(-headW/1.8*face,headY-headH/5);
+                vertex(-headW/5*face,headY-headH/2);
+                vertex(headW/5*face,headY-headH/2);
+                vertex(-headW/2.5*face,headY+headH/2);
+                endShape();
+
+                stroke(colorArray[1]);
+                fill(colorArray[0]);
+            }
             if(side==face){
                 scale(0.7);
                 translate(0,headY/3);
@@ -611,6 +668,26 @@ function eyes(){
             face*-2*headW/5,headY+headH/3
         );
         pop();
+    }else if(mode==2){
+        push();
+        translate(headX+headW/3*face,0);
+        bezier(
+            -headW/6*face,headY+headH/9, 
+            -headW/6*face, headY+headY/9, 
+            -headW/4*face,headY+0.29*headH, 
+            -2*headW/5*face,headY+headH/3
+        );
+        scale(0.8);
+        translate(-0.3*s*face,0.95*headH);
+        bezier(
+            headW/6*face,headY+headH/9, 
+            headW/6*face, headY+headY/9, 
+            headW/4*face,headY+0.29*headH, 
+            2*headW/5*face,headY+headH/3
+        );
+      
+      
+        pop();
     }
     
 }
@@ -626,8 +703,11 @@ function neck(){
     ];
 
     let neckY;
-    
-    if(mode==0){
+    let mod = 0;
+    if(mode==2){
+        mod = face*headW/4;
+    }
+    if(mode==0||mode==2){
         if(face==1){
             if(chara==0){
                 neckY = (10*headW/4);
@@ -644,7 +724,7 @@ function neck(){
         vertex(-neck0X[1],headY+(7*headW/4));
         vertex(-neck0X[2],headY+(7*headW/4));
         vertex(-neck0X[3],headY+(8*headW/4));
-        vertex(0,headY+neckY);
+        vertex(mod,headY+neckY);
         vertex(neck0X[3],headY+(8*headW/4));
         vertex(neck0X[2],headY+(7*headW/4));
         vertex(neck0X[1],headY+(7*headW/4));
@@ -692,7 +772,8 @@ function chest(){
         fill(colorArray[2]);
     }
     const torso0X = [
-        3*headW/7, headW/7, headW/5, 3*headW/6, 6*headW/7,2*headW/6
+        3*headW/7, headW/7, headW/5, 3*headW/6, 6*headW/7,2*headW/6,
+        headW/2
     ];
 
     if(mode==0){
@@ -710,6 +791,17 @@ function chest(){
         translate(headX,0);
         beginShape();
         vertex(-torso0X[5]*face,headY+(8*headW/4));
+        bezierVertex(-torso0X[3]*face,headY+(10*headW/4), -torso0X[0]*face, 1.75*headY,-torso0X[2]*face,headY+(16*headW/4) );
+        vertex(torso0X[2]*face,headY+(16*headW/4));
+        bezierVertex( torso0X[0]*face, 1.75*headY,torso0X[4]*face,headY+(10*headW/4), torso0X[3]*face,headY+(8*headW/4) );
+        endShape(CLOSE);
+        pop();
+
+    }else if(mode==2){
+        push();
+        translate(headX,0);
+        beginShape();
+        vertex(-torso0X[6]*face,headY+(8*headW/4));
         bezierVertex(-torso0X[3]*face,headY+(10*headW/4), -torso0X[0]*face, 1.75*headY,-torso0X[2]*face,headY+(16*headW/4) );
         vertex(torso0X[2]*face,headY+(16*headW/4));
         bezierVertex( torso0X[0]*face, 1.75*headY,torso0X[4]*face,headY+(10*headW/4), torso0X[3]*face,headY+(8*headW/4) );
@@ -738,21 +830,19 @@ function hips(){
         headW/5, headW/1.5, headW/9
     ];
 
-    if(mode==0||mode==1){
-        push();
-        translate(headX,0);
-        beginShape();
-        vertex(-hip0X[0],headY+(16*headW/4));
-        bezierVertex(-hip0X[2],headY+(16*headW/4), -hip0X[1],headY+(16*headW/4), -hip0X[1],headY+(24*headW/4));
-        vertex(hip0X[1],headY+(24*headW/4));
-        bezierVertex(hip0X[1],headY+(16*headW/4), hip0X[2],headY+(16*headW/4), hip0X[0],headY+(16*headW/4));
-        endShape(CLOSE);
-        pop();
-    }
-   
-
-
+    push();
+    translate(headX,0);
+    beginShape();
+    vertex(-hip0X[0],headY+(16*headW/4));
+    bezierVertex(-hip0X[2],headY+(16*headW/4), -hip0X[1],headY+(16*headW/4), -hip0X[1],headY+(24*headW/4));
+    vertex(hip0X[1],headY+(24*headW/4));
+    bezierVertex(hip0X[1],headY+(16*headW/4), hip0X[2],headY+(16*headW/4), hip0X[0],headY+(16*headW/4));
+    endShape(CLOSE);
+    pop();
+    
 }
+
+
 
 function leg(side){  //each leg drawn seperately for layering
 strokeWeight(2);
@@ -768,6 +858,13 @@ let legY = headY+(18*headW/4);
 if(mode==1){
     legX1 = headX-legW/2;
     legX2 = headX-legW/2;
+}else if(mode==2){
+    if(face==1){
+    legX1 = headX-legW;
+    }else{
+        legX2 = headX-legW/5;
+    }
+
 }
 
 if(side==0){
@@ -888,6 +985,8 @@ function sleeves(w,l,c){        //draws pants/arm sleeves
 
 }
 
+
+
 function overclothes(a){
     push();
     translate(headX,0);
@@ -956,32 +1055,62 @@ function clothes(){
     if(chara==0){
         stroke(colorArray[5]);
         fill(colorArray[4]);
-        if (mode == 0||mode==1){
-            let mod =0;
-            //top sleevely part of dress
-            let As = angleUR+90;
-            let Ae = angleUL+90;
-            if(angleUR>=315||angleUR<=90){
-                As = 35;
-            }
-            if(angleUL<=45){
-                Ae = 145;
-            }
-            if(mode==1){
-                mod=face*headW/20;
-            }
-            arc(headX+mod,headY+(6*headW/4),20*s,2.5*headH,As,Ae,PIE); 
+        
+        let mod =0;
+        //top sleevely part of dress
+        let As = angleUR+90;
+        let Ae = angleUL+90;
+        if(angleUR>=315||angleUR<=90){
+            As = 35;
+        }
+        if(angleUL<=45){
+            Ae = 145;
+        }
+        if(mode==1){
+            mod=face*headW/20;
+        }
+        arc(headX+mod,headY+(6*headW/4),20*s,2.5*headH,As,Ae,PIE); 
            
 
-            if(face==1&&mode==0){
-                //front of skirt
-                arc(headX-headW/5,headY+(15.9*headW/4),5*headH,5*headH,100,angleEnd+91,PIE); //front of skirt left
-                arc(headX+headW/5,headY+(15.9*headW/4),5*headH,5*headH,angleStart+89,80,PIE); //front of skirt right
+        if((face==1&&mode==0)||mode==2){
+            //front of skirt
+            push();
+
+            if(mode==2){
+                if(face==1){
+                    translate(headW/5,0);
+                }else{
+                    translate(-headW/5,0);
+                }
+                beginShape();
+                vertex(headX-headW/5*face,headY+(15.9*headW/4));
+                vertex(headX-2.1*headW/5*face,headY+(15.9*headW/4));
+                vertex(headX-6*headW/5*face,headY+(20*headW/4));
+                endShape();
+                if(face==-1){
+                    translate(headW/5,0);
+                }
             }
+            arc(headX-headW/5,headY+(15.9*headW/4),5*headH,5*headH,100,angleEnd+91,PIE); //front of skirt left
+
+            if(mode==2){
+                if(face==1){
+                    translate(-headW/5,0);
+                }else{
+                    translate(-headW/5,0);
+                }
+            }
+            arc(headX+headW/5,headY+(15.9*headW/4),5*headH,5*headH,angleStart+89,80,PIE); //front of skirt right
+
+            pop();
+          
+            overclothes();
+            
+        }
 
            
             
-        }
+        
     }else{
         stroke(colorArray[3]);
         fill(colorArray[2]);
@@ -1009,20 +1138,25 @@ function clothes(){
 function underclothes(){        //back layer of character, back of skirts/ tails of coat 
     strokeWeight(2);            //seperate to clothes for easier layering
     if(chara==0){
-        if(face==1&&mode==0){
+        if((face==1&&mode==0)||mode==2){
         stroke(colorArray[9]);
         fill(colorArray[5]);
         }else{
             stroke(colorArray[5]);
             fill(colorArray[4]);   
         }
-        if (mode == 0){
+        if (mode==0||mode==2){
            figureAngles();
-
+           push();
+            if(mode==2){
+                scale(0.9);
+                translate(1.1*headW,headH/1.1);
+            }
             arc(headX,headY+(15*headW/4),5*headH,5*headH,angleStart+90,angleEnd+90,PIE); //back of skirt
             if(face==-1){
                 overclothes();
             }
+            pop();
         }else if(mode==1){
             arc(headX,headY+(15*headW/4),5*headH,5*headH,angleStart+95,angleEnd+85,PIE); //back of skirt
 
@@ -1144,6 +1278,8 @@ function underclothes(){        //back layer of character, back of skirts/ tails
     }
 
 }
+
+
 
 function figureAngles(){
     angleStart = angleTL;         //skirt reacts to angles of legs

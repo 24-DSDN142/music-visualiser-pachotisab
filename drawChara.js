@@ -70,7 +70,9 @@ function drawChara(m,f,c,x,y,a1,a2,a3,a4,a5,a6,a7,a8,aHe,aT,aHi,sideL,sideA){
 
    
     if(mode==0){
+        if(face==1){
         underclothes();
+        }
         leg(sideL);
         if(sideL==1){
             leg(0);
@@ -95,7 +97,9 @@ function drawChara(m,f,c,x,y,a1,a2,a3,a4,a5,a6,a7,a8,aHe,aT,aHi,sideL,sideA){
             arm(3);
             arm(2);
         } 
-       
+        if(face==-1){
+            underclothes();
+            }
     }else if (mode==1){
         if(face==1){
             leg(1);
@@ -104,7 +108,7 @@ function drawChara(m,f,c,x,y,a1,a2,a3,a4,a5,a6,a7,a8,aHe,aT,aHi,sideL,sideA){
             leg(0);
             underclothes();
             torso();
-            overclothes();
+            overclothes(-1*face);
             arm(0);
             arm(2);
         }else{
@@ -114,12 +118,13 @@ function drawChara(m,f,c,x,y,a1,a2,a3,a4,a5,a6,a7,a8,aHe,aT,aHi,sideL,sideA){
             leg(1);
             underclothes();
             torso();
-            overclothes();
+            overclothes(-1*face);
             arm(1);
             arm(3);
 
         }
         clothes();
+        
         head();
         
     }
@@ -145,12 +150,15 @@ function head(){ //calls all the functions to create the head in the order neede
             hair();
         }
     }else if (mode==1){
-       
+        horn(1*face);
         neck();
+        if(chara==1){
+            overclothes(-1*face);
+        }
         skull();
         eyes();
         hair();
-        // horns();
+        horn(-1*face);
     }
    // pop();
 }
@@ -216,17 +224,16 @@ function hair(){
         strokeWeight(2);
         stroke(colorArray[7]);
         fill(colorArray[6]);
-        if(mode==0){
-            let a = hairW/2;
-            let b = hairW/20;
-            let c = hairH/1.5;
 
-            ellipse(hairX,hairY,hairW,hairH);
-            const hair0X = [
-                a, a+b, a+3*b, a/2, 0.75*hairW,
-                hairW, 0.90*hairW, hairW+3*b
-            ]
-                
+        let a = hairW/2;
+        let b = hairW/20;
+        let c = hairH/1.5;
+        const hair0X = [
+            a, a+b, a+3*b, a/2, 0.75*hairW,
+            hairW, 0.90*hairW, hairW+3*b
+        ]
+        if(mode==0){
+            ellipse(hairX,hairY,hairW,hairH);   
             push();
             translate(hairX,0);
 
@@ -256,21 +263,43 @@ function hair(){
             
             
         }else if(mode==1){
+            
+                push();
+                translate(headX-face*b,0);
+                beginShape();
+                vertex(-hair0X[1]*face,hairY-0.4*hairH);
+                vertex(-hair0X[3]*face,hairY-0.7*hairH);
+                vertex(hair0X[3]*face,hairY-0.63*hairH);
+                vertex(0,hairY);
+                vertex(0,hairY+0.85*hairH);     //7
 
+                vertex(-hair0X[3]*face,hairY+0.9*hairH);  //second to last strand (8)
+                vertex(0,hairY+1.1*hairH);      //9
+                vertex(-hair0X[0]*face,hairY+hairH);        //10
+                vertex(-hair0X[4]*face,hairY+0.85*hairH);  //11   
 
+                vertex(-hair0X[5]*face,hairY+0.90*hairH);  //12
+                vertex(-hair0X[6]*face,hairY+hairH);    //bottom right (13)
+                vertex(-hair0X[7]*face,hairY+0.95*hairH);//14
+                vertex(-hair0X[1]*face,hairY+0.3*hairH);      // 15
+                vertex(-hair0X[0]*face,hairY);              //top right(16)
+                endShape(CLOSE);
+                pop();
+            
         }
     }else{
         strokeWeight(2);
         stroke(colorArray[3]);
         fill(colorArray[2]);
+        const hair1X = [
+            hairW/2, 3*hairW/5, 4*hairW/5, hairW/3,
+            hairW/2-hairW/8, 3*hairW/5-hairW/8,
+            4*hairW/5-hairW/8, hairW/4, hairW/2.7,
+            hairW/7           
+        ]
+
         if(mode==0){
             ellipse(hairX,hairY,hairW,hairH);
-
-            const hair1X = [
-                hairW/2, 3*hairW/5, 4*hairW/5, hairW/3,
-                hairW/2-hairW/8, 3*hairW/5-hairW/8,
-                4*hairW/5-hairW/8, hairW/4
-            ]
 
             push();
             translate(hairX,0);
@@ -375,7 +404,75 @@ function hair(){
             endShape();
 
             pop();
+        }else if(mode==1){
+
+            push();
+            translate(hairX,0);
+
+            beginShape();
+            vertex(-hair1X[0]*face,hairY);
+            vertex(-hair1X[8]*face,hairY-0.5*hairH);
+            vertex(0,hairY-0.7*hairH);
+            vertex(hair1X[3]*face,hairY-0.57*hairH);
+            vertex(-hair1X[9]*face,hairY);
+            vertex(0,hairY+hairH+1);
+            endShape();
+
+            beginShape();
+            curveVertex(-hair1X[0]*face,hairY);              //hair strand 1
+            curveVertex(-hair1X[0]*face,hairY);
+
+            curveVertex(-hair1X[1]*face,hairY+0.15*hairH);
+
+            curveVertex(-hair1X[2]*face,hairY+0.1*hairH);
+            curveVertex(-hair1X[2]*face,hairY+0.1*hairH);
+
+            curveVertex(-hair1X[1]*face,hairY+0.25*hairH);
+
+            curveVertex(-hair1X[0]*face,hairY+0.2*hairH);
+            curveVertex(-hair1X[0]*face,hairY+0.2*hairH);   
+            
+            curveVertex(-hair1X[0]*face,hairY+0.2*hairH);    //hair strand 2
+            curveVertex(-hair1X[0]*face,hairY+0.2*hairH);
+
+            curveVertex(-hair1X[1]*face,hairY+0.5*hairH);
+
+            curveVertex(-hair1X[2]*face,hairY+0.5*hairH);
+            curveVertex(-hair1X[2]*face,hairY+0.5*hairH);
+
+            curveVertex(-hair1X[1]*face,hairY+0.65*hairH);
+
+            curveVertex(-hair1X[3]*face,hairY+0.65*hairH);
+            curveVertex(-hair1X[3]*face,hairY+0.65*hairH); 
+
+            curveVertex(-hair1X[4]*face,hairY+0.65*hairH);              //hair strand 3
+            curveVertex(-hair1X[4]*face,hairY+0.65*hairH);
+
+            curveVertex(-hair1X[5]*face,hairY+0.75*hairH);
+
+            curveVertex(-hair1X[6]*face,hairY+0.7*hairH);
+            curveVertex(-hair1X[6]*face,hairY+0.7*hairH);
+
+            curveVertex(-hair1X[5]*face,hairY+0.85*hairH);
+
+            curveVertex(-hair1X[4]*face,hairY+0.8*hairH);
+            curveVertex(-hair1X[4]*face,hairY+0.8*hairH);  
+            
+            curveVertex(-hair1X[4]*face,hairY+0.8*hairH);     //   centre half
+            curveVertex(-hair1X[4]*face,hairY+0.8*hairH); 
+
+            curveVertex(-hair1X[7]*face,hairY+0.9*hairH);
+
+            curveVertex(0,hairY+hairH);
+            curveVertex(0,hairY+hairH);
+
+            endShape();
+            pop();
+
         }
+    
+
+
     }
 }
 
@@ -384,13 +481,11 @@ function horn(side){ // called twice by head for each side
     stroke(colorArray[1]);
     fill(colorArray[0]);
     if(chara==0){
+        const horn0X = [
+            headW/4, headW/2, 3*headW/4, 3*headW/2, 11*headW/16,
+            headW, 3*headW/5
+        ]
         if(mode==0){
-            const horn0X = [
-                headW/4, headW/2, 3*headW/4, 3*headW/2, 11*headW/16,
-                headW, 3*headW/5
-            ]
-
-           
             push();
             translate(headX,0);
             beginShape();
@@ -407,13 +502,39 @@ function horn(side){ // called twice by head for each side
             vertex(side*horn0X[0],headY-headH/8);        //11  
             endShape();
             pop();
+        }else if(mode==1){
+            push();
+            translate(headX,0);
+            if(side==face){
+                scale(0.7);
+                translate(0,headY/3);
+            }
+            beginShape();
+            vertex(side*horn0X[0],headY-2*headH/5);      //1
+            vertex(side*horn0X[1],headY-(4*headH/8));    //2
+            vertex(side*horn0X[2],headY-(2*headH/3));    //3
+            vertex(side*horn0X[1],headY-headH);          //4
+            vertex(side*horn0X[2],headY-(4*headH/3));    //5
+            vertex(side*horn0X[3],headY-headH);          //6
+            vertex(side*horn0X[2],headY-(1.2*headH));    //7
+            vertex(side*horn0X[4],headY-headH);          //8
+            vertex(side*horn0X[5],headY-(7*headH/10));   //9
+            vertex(side*horn0X[6],headY-(1*headH/4));    //10
+            vertex(side*horn0X[0],headY-headH/8);        //11  
+            endShape();
+            pop();
+
+
+
         }
     }else{
+
+        const horn1X = [
+            headW/2, 3*headW/4, headW/4, headW/5, 11*headW/16,
+            headW, 3*headW/5
+        ]
+
         if(mode==0){
-            const horn1X = [
-                headW/2, 3*headW/4, headW/4, headW/5, 11*headW/16,
-                headW, 3*headW/5
-            ]
 
             push();
             translate(headX,0);
@@ -428,6 +549,24 @@ function horn(side){ // called twice by head for each side
             pop();
 
 
+
+        }else if(mode==1){
+            if(side==-face){
+                push();
+                translate(headX,0);
+                beginShape();
+                vertex(side*horn1X[0],headY);
+                vertex(side*horn1X[1],headY-headH/4);
+                vertex(side*horn1X[2],headY-headH/5);
+                endShape();
+                translate(headW/10,0);
+                beginShape();
+                vertex(side*horn1X[3],headY-headH/3);
+                vertex(0,headY-headH*2);
+                vertex(-side*horn1X[3],headY-headH/2.5);
+                endShape();
+                pop();
+            }
 
         }
 
@@ -585,8 +724,13 @@ function hips(){
         stroke(colorArray[9]);
         fill(colorArray[5]);
     }else if(chara==1){
-        stroke(colorArray[7]);
-        fill(colorArray[6]);
+        if(mode==0){
+            stroke(colorArray[7]);
+            fill(colorArray[6]);
+        }else if (mode==1){
+            stroke(colorArray[3]);
+            fill(colorArray[2]);
+        }
     }
     const hip0X = [
         headW/5, headW/1.5, headW/9
@@ -755,35 +899,51 @@ function overclothes(a){
         vertex(-headW/4.3,headY+(15.9*headW/4));
         endShape(CLOSE);
     }else if(chara==1){
-        if(face == 1){
-            if(a<0){
+        let mod = 0;
+        if(mode==1){
+            stroke(colorArray[7]);
+            fill(colorArray[6]);
+            beginShape();
+            vertex(0,headY+(8*headW/4));
+            vertex(headW/3.5*face,headY+(13*headW/4));
+            bezierVertex( 3*headW/7*face, 1.75*headY,6*headW/7*face,headY+(10*headW/4), 3*headW/6*face,headY+(8*headW/4));
+            endShape(CLOSE);
+            translate(face*headW/3.2,-headW/5);
+            mod =a*-headW/10;
+            
+        }
+      
+        if(a<0&&mode==0){
             stroke(colorArray[7]);
             fill(colorArray[6]);
             rect(-headW/5,headY+1.8*headH,headW/2.5,headH);
-            }
-            stroke(colorArray[3]);
-            fill(colorArray[2]);
-            beginShape();
-            vertex(a*headW/5,headY+1.7*headH);
-            vertex(0,headY+3*headH);
-            vertex(a*headW/1.8,headY+2.4*headH);
-            vertex(a*headW/5,headY+2.4*headH);
-            vertex(a*headW/1.25,headY+1.65*headH);
-            endShape(CLOSE);
+        }
+            
+        stroke(colorArray[3]);
+        fill(colorArray[2]);
+        beginShape();
+        vertex(a*headW/5+mod,headY+1.7*headH);
+        vertex(0+mod,headY+2.9*headH);
+        vertex(a*headW/1.8,headY+2.4*headH);
+        vertex(a*headW/5,headY+2.4*headH);
+        vertex(a*headW/1.25,headY+1.65*headH);
+        endShape(CLOSE);
             
 
-            stroke(colorArray[1]);
-            fill(colorArray[0]);
-            beginShape();
-            vertex(a*headW/7,headY+1.6*headH);
-            vertex(a*headW/14,headY+2.1*headH);
-            vertex(a*headW/2,headY+1.7*headH);
-            vertex(a*headW/2,headY+1.4*headH);
-            endShape(CLOSE);
+        stroke(colorArray[1]);
+        fill(colorArray[0]);
+        beginShape();
+        vertex(a*headW/7+mod,headY+1.6*headH);
+        vertex(a*headW/14+mod,headY+2.1*headH);
+        vertex(a*headW/2,headY+1.7*headH);
+        vertex(a*headW/2,headY+1.4*headH);
+        endShape(CLOSE);
             
+        if(face == 1){
             stroke(colorArray[10]);
             fill(colorArray[8]);
             ellipse(-headW/10,headY+3.2*headH+a*(s),s/1.5,s/1.5);
+            
         }
     }
     pop();
@@ -858,7 +1018,9 @@ function underclothes(){        //back layer of character, back of skirts/ tails
            figureAngles();
 
             arc(headX,headY+(15*headW/4),5*headH,5*headH,angleStart+90,angleEnd+90,PIE); //back of skirt
-
+            if(face==-1){
+                overclothes();
+            }
         }else if(mode==1){
             arc(headX,headY+(15*headW/4),5*headH,5*headH,angleStart+95,angleEnd+85,PIE); //back of skirt
 
@@ -868,8 +1030,10 @@ function underclothes(){        //back layer of character, back of skirts/ tails
         fill(colorArray[2]);
 
         const tails0X = [
-            1.3*headW/5, 1.3*headW, 1.8*headW, headW, headW/4
+            1.3*headW/5, 1.3*headW, 1.8*headW, headW, headW/4, 0.6*headW
         ];
+
+        if(mode==0){
 
         push();
         translate(headX,0);
@@ -904,6 +1068,15 @@ function underclothes(){        //back layer of character, back of skirts/ tails
 
         endShape();
 
+        stroke(colorArray[3]);
+        fill(colorArray[2]);
+        beginShape();
+        vertex(-headW/1.8,headY+1.6*headH);
+        vertex(-headW/1.8,headY+1.9*headH);
+        vertex(headW/1.8,headY+1.9*headH);
+        vertex(headW/1.8,headY+1.6*headH);
+        endShape(CLOSE);
+
         stroke(colorArray[1]);
         fill(colorArray[0]);
         beginShape();
@@ -912,8 +1085,56 @@ function underclothes(){        //back layer of character, back of skirts/ tails
         vertex(headW/2,headY+1.7*headH);
         vertex(headW/2,headY+1.4*headH);
         endShape(CLOSE);
+
         pop();
         
+        }else if (mode==1){
+            push();
+            translate(headX,0);
+            beginShape();
+            
+            curveVertex(-tails0X[0]*face,headY+(16*headW/4));
+            curveVertex(-tails0X[0]*face,headY+(16*headW/4));
+
+            curveVertex(-tails0X[1]*face,headY+(24*headW/4));
+            curveVertex(-tails0X[2]*face,headY+(32*headW/4));
+
+            curveVertex(-tails0X[3]*face,headY+(40*headW/4));
+            curveVertex(-tails0X[3]*face,headY+(40*headW/4));
+
+            curveVertex(-tails0X[3]*face,headY+(34*headW/4));
+            curveVertex(-tails0X[4]*face,headY+(26*headW/4));
+
+            curveVertex(tails0X[5]*face,headY+(24*headW/4));
+            curveVertex(tails0X[5]*face,headY+(24*headW/4));
+
+            endShape();
+            
+
+            stroke(colorArray[3]);
+            fill(colorArray[2]);
+            beginShape();
+            vertex(-headW/4*face,headY+1.6*headH);
+            vertex(-headW/4*face,headY+1.9*headH);
+            vertex(headW/1.8*face,headY+1.9*headH);
+            vertex(headW/1.8*face,headY+1.6*headH);
+            endShape(CLOSE);
+
+            rect(0,headY,2*s,5*s);
+
+            stroke(colorArray[1]);
+            fill(colorArray[0]);
+            beginShape();
+            vertex(-headW/5*face,headY+1.4*headH);
+            vertex(-headW/5*face,headY+1.7*headH);
+            vertex(headW/2*face,headY+1.7*headH);
+            vertex(headW/2*face,headY+1.4*headH);
+            endShape(CLOSE);
+
+            
+
+            pop();
+        }
 
 
 

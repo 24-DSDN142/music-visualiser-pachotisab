@@ -88,6 +88,7 @@ function drawChara(m,f,c,x,y,a1,a2,a3,a4,a5,a6,a7,a8,aHe,aT,aHi,sideL,sideA){
         }
 
         head(); //calls head which in turn calls rest of body its self in correct order
+
         //arms and legs are seperate to this to give finer control over what layer they are on
 
         if(sideA==0){//draws forearms
@@ -100,7 +101,7 @@ function drawChara(m,f,c,x,y,a1,a2,a3,a4,a5,a6,a7,a8,aHe,aT,aHi,sideL,sideA){
         if(face==-1){
             underclothes();
             }
-    }else if (mode==1){
+    }else if (mode==1||mode==2){
         if(face==1){
             leg(1);
             arm(1);
@@ -650,7 +651,7 @@ function neck(){
         endShape();
         
         pop();
-        if(chara==1){
+        if(chara==1&&face==1){
         overclothes(1);
         overclothes(-1);
         }
@@ -1067,7 +1068,8 @@ function underclothes(){        //back layer of character, back of skirts/ tails
         curveVertex(tails0X[0],headY+(16*headW/4));
 
         endShape();
-
+        
+        
         stroke(colorArray[3]);
         fill(colorArray[2]);
         beginShape();

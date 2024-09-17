@@ -1,47 +1,65 @@
-
+let modenum;
+let facenum;
+let charanum = 50;
+let charaX = 350;
+let charaY = 150;
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
 function draw_one_frame(words, vocal, drum, bass, other, counter) {
   drawBg();
   
-   let bar_spacing = height / 10;
-   let bar_height = width / 12;
-   let bar_pos_x = width / 2;
- 
-   let = c = map(vocal,0,100,0,110);
 
-   // vocal bar is red
-   fill(200, 0, 0);
-   rect(bar_pos_x, height / 2 + 1 * bar_spacing, 4 * vocal, bar_height);
-   fill(c,200,50);
-   text("vocals", bar_pos_x, height / 2 + 1 * bar_spacing + 8);
-
-   let charaX = 350;
-   let charaY = 150;
-  
    
-    drawChara(3,1,0,charaX,charaY, 0,0,0,0, 40,0,330,0, 0,0,0,0,0,7);
-    drawChara(3,1,1,charaX+500,charaY, 0,0,0,0, 80,0,280,0, 0,0,0,0,0,7);
+if(counter<=3){
+  modenum = 0;
+  facenum = 1;
+}
+
+   if(counter%5==0){
+    let = c = map(vocal,0,100,-90,90);
+    let = d = map(drum,0,100,-90,90);
+    let = o = map(other,0,100,185,360);
+    let = b = map(bass,0,100,0,175);
+
+   }
+
+   
+  
+   if(c>0&&d>0){
+    c = -1;
+   }
+  
+  
+   drawChara(modenum,facenum,0,charaX,charaY, c,0,-d,0, b,0,o,0, 0,0,0,0,0,7);
+   drawChara(modenum,facenum,1,charaX+450,charaY, c,0,-d,0, b,0,o,0, 0,0,0,0,0,7);
    strokeWeight(1);
-   // drum bar is green
-   fill(0, 200, 0);
-   rect(bar_pos_x, height / 2 + 2 * bar_spacing, 4 * c, bar_height);
-   fill(0);
-   text("drums", bar_pos_x, height / 2 + 2 * bar_spacing + 8);
- 
-   // bass bar is blue
-   fill(50, 50, 240);
-   rect(bar_pos_x, height / 2 + 3 * bar_spacing, 4 * bass, bar_height);
-   fill(0);
-   text("bass", bar_pos_x, height / 2 + 3 * bar_spacing + 8);
- 
-   // other bar is white
-   fill(200, 200, 200);
-   rect(bar_pos_x, height / 2 + 4 * bar_spacing, 4 * other, bar_height);
-   fill(0);
-   text("other", bar_pos_x, height / 2 + 4 * bar_spacing + 8);
-   fill(255, 255, 0);
- 
+  
+   if(counter%300==0&&counter!=0){
+    
+    print(counter);
+      if(modenum==3){
+        modenum=0;
+      }else{
+        modenum = modenum+1;
+      }  
+      charaX += charanum;
+   }
+
+   
+
+   if(counter%300==0&&mode==3){
+    print(counter);
+      if(facenum==1){
+        facenum = -1;
+        charanum = charanum*-1;
+      }else{
+        facenum = 1;
+        charanum = charanum*-1;
+      }
+   }
+   print(counter);
    // display "words"
+   stroke(colorArray[1]);
+  fill(colorArray[0]);
    textAlign(CENTER);
    textSize(vocal);
    text(words, width/2, height/3);
